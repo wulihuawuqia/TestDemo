@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <root>
+        <priority value="ERROR" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE-Console" />
+        <appender-ref ref="GROUP-FILE" />
+    </root>
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %6p - %30.30c - %m %n" />
+		</layout>
+	</appender>
+
+    <!-- sql appender -->
+    <appender name="FILE-SQL" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="Append" value="false" />
+        <param name="file" value="${log4j.path}/item-sql.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %6p - %30.30c - %m %n" />
+        </layout>
+    </appender>
+
+    <!-- file appender -->
+    <appender name="FILE-Console" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="Append" value="false" />
+        <param name="file" value="${log4j.path}/item-all.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %6p - %30.30c - %m %n" />
+        </layout>
+    </appender>
+
+    <appender name="FILE-UNSHOWN" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="Append" value="false" />
+        <param name="file" value="${log4j.path}/unshown.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m %n" />
+        </layout>
+    </appender>
+
+	<logger name="com.ibatis" additivity="true">
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	<category name="java.sql" additivity="false">
+		<priority value="error" />
+		<appender-ref ref="FILE-SQL" />
+		<appender-ref ref="CONSOLE" />
+	</category>
+
+    <category name="jd.gms.itemsoa.rpc.kengen.impl.KeyGenServiceImpl" additivity="false">
+        <priority value="debug" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE-Console" />
+    </category>
+
+    <category name="com.jd.item.guardian.client.MessageProcessor" additivity="false">
+        <appender-ref ref="FILE-UNSHOWN" />
+    </category>
+
+    <!-- es -->
+    <appender name="commonListAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="file" value="${log4j.path}/commonList.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
+        </layout>
+    </appender>
+
+    <logger name="commonList" additivity="false">
+        <level value="error"   />
+        <appender-ref ref="commonListAppender" />
+    </logger>
+
+    <logger name="unshown" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="FILE-UNSHOWN" />
+    </logger>
+    
+    <logger name="${ump.group.properties}" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="GROUP-FILE" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    
+    <appender name="GROUP-FILE" class="org.apache.log4j.DailyRollingFileAppender" >
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="Append" value="false" />
+        <param name="file" value="${log4j.path}/groupFile.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m %n" />
+        </layout>
+    </appender>
+
+</log4j:configuration>
